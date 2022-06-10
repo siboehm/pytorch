@@ -4496,14 +4496,8 @@ for shape in [(1,), ()]:
         Ensures that we can access saved tensors twice in custom functions
         when using non-reentrant checkpoint.
         """
-        class MyFunc(torch.autograd.Function):
-            @staticmethod
-            def forward(ctx, x, y, z):
-                w = x * y * z
-                out = w + w
-                ctx.save_for_backward(x, y, z, w, out)
-                return out
 
+        class MyFunc(torch.autograd.Function):
             @staticmethod
             def backward(ctx, grad_out):
                 x, y, z, w, out = ctx.saved_tensors
